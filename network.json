@@ -1,0 +1,25 @@
+{
+    "questions": [
+      {
+        "question": "What is an IP address?",
+        "options": ["A unique numerical identifier for devices on a network", "A website address", "A physical address of a device", "A type of network cable"],
+        "correct": 0
+      },
+      {
+        "question": "What does 'HTTP' stand for in website addresses (e.g., http://www.example.com)?",
+        "options": ["Hypertext Transfer Protocol", "HyperText Markup Language", "High-Level Transfer Protocol", "Hypertext Text Transfer Protocol"],
+        "correct": 0
+      },
+      {
+        "question": "What is DNS (Domain Name System) used for?",
+        "options": ["Resolving domain names to IP addresses", "Routing data packets", "Encrypting network traffic", "Managing email servers"],
+        "correct": 0
+      },
+      {
+        "question": "What is the function of a router in a computer network?",
+        "options": ["Directs traffic between different networks", "Connects devices within a local network", "Resolves domain names", "Transmits wireless signals"],
+        "correct": 0
+      }
+    ]
+  }
+  

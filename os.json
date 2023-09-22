@@ -1,0 +1,25 @@
+{
+    "questions": [
+      {
+        "question": "What is an operating system?",
+        "options": ["Software that manages computer hardware", "A programming language", "A computer virus", "Application software"],
+        "correct": 0
+      },
+      {
+        "question": "What is the role of a kernel in an operating system?",
+        "options": ["Manages system resources and services", "Processes user input", "Manages the file system", "Displays graphical user interface"],
+        "correct": 0
+      },
+      {
+        "question": "What is multitasking in the context of operating systems?",
+        "options": ["Execution of multiple tasks simultaneously", "Running a single task at a time", "Switching between tasks in fixed intervals", "Executing tasks on multiple computers"],
+        "correct": 0
+      },
+      {
+        "question": "What is virtual memory in operating systems?",
+        "options": ["A technique to use more RAM than is physically available", "A memory reserved for virtual machines", "A type of cache memory", "A memory used for storing virtual files"],
+        "correct": 0
+      }
+    ]
+  }
+      

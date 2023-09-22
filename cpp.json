@@ -1,0 +1,25 @@
+{
+    "questions": [
+      {
+        "question": "What is the output of the following C++ code?\n\n```cpp\n#include <iostream>\nusing namespace std;\n\nint main() {\n    int a = 5, b = 3;\n    cout << (a + b);\n    return 0;\n}\n```",
+        "options": ["8", "15", "53", "Error"],
+        "correct": 0
+      },
+      {
+        "question": "Which C++ data type is used to store whole numbers?",
+        "options": ["int", "float", "char", "double"],
+        "correct": 0
+      },
+      {
+        "question": "What is the correct way to declare a constant in C++?",
+        "options": ["const int num = 10;", "int const num = 10;", "int num = const 10;", "int num const = 10;"],
+        "correct": 0
+      },
+      {
+        "question": "In C++, how do you read input from the user?",
+        "options": ["cin", "cout", "scanf", "printf"],
+        "correct": 0
+      }
+    ]
+  }
+  

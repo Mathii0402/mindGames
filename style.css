@@ -1,0 +1,98 @@
+
+
+/* Apply styles to the main window */
+QMainWindow {
+    /* background-color: #e11515; */
+    height: 383 ;
+    width: 342;
+    background-color: #21618c;
+}
+
+/* Apply styles to all widgets */
+QWidget {
+    /* background-color: #111; */
+    color: black;
+    font-size: 18px;
+}
+/* Center the content horizontally and vertically */
+.centered-content {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    background-color: #21618c;
+    padding-left: 10%;
+}
+
+
+/* Apply styles to labels */
+QLabel {
+    color:  black;
+    font-size: 24px;
+    margin-bottom: 15px;
+}
+#titleLabel
+{
+    font-family: sans-serif;
+    font-size: large;
+    color: red;
+}
+/* Apply styles to buttons */
+/* Center the content horizontally and vertically */
+.centered-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+}
+
+/* Style for labels */
+.centered-label {
+    font-size: 18px; /* Adjust font size as needed */
+}
+
+/* Style for input fields */
+.centered-input {
+    width: 200px; /* Adjust width as needed */
+    height: 30px; /* Adjust height as needed */
+    font-size: 16px; /* Adjust font size as needed */
+}
+
+QPushButton:hover {
+    background-color: #2980b9;
+}
+
+QPushButton:pressed {
+    background-color: #21618c;
+
+}
+
+/* Apply styles to line edits */
+QLineEdit {
+    padding: 10px;
+    font-size: 18px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+}
+
+/* Apply styles to text in line edits */
+QLineEdit::focus {
+    border: 2px solid #3498db;
+}
+
+/* Apply styles to the start quiz button */
+#startQuizButton {
+    background-color: #2ecc71;
+}
+
+#startQuizButton:hover {
+    background-color: #27ae60;
+}
+
+#startQuizButton:pressed {
+    background-color: #219a53;
+}
