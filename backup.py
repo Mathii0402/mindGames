@@ -1,5 +1,5 @@
 import sys
-from PyQt5.QtWidgets import QTextEdit,QScrollArea,QHeaderView,QDialog,QApplication, QWidget, QVBoxLayout, QLabel, QRadioButton, QPushButton, QMessageBox, QButtonGroup, QFrame,QTableWidget, QTableWidgetItem, QVBoxLayout, QDialog,QFrame,QComboBox,QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QLabel, QStackedWidget, QMessageBox, QRadioButton, QButtonGroup, QVBoxLayout, QHBoxLayout
+from PyQt5.QtWidgets import QScrollArea,QHeaderView,QDialog,QApplication, QWidget, QVBoxLayout, QLabel, QRadioButton, QPushButton, QMessageBox, QButtonGroup, QFrame,QTableWidget, QTableWidgetItem, QVBoxLayout, QDialog,QFrame,QComboBox,QApplication, QWidget, QPushButton, QVBoxLayout, QLineEdit, QLabel, QStackedWidget, QMessageBox, QRadioButton, QButtonGroup, QVBoxLayout, QHBoxLayout
 import pymongo
 import subprocess
 from PyQt5.QtCore import QTimer
@@ -7,7 +7,6 @@ from PyQt5.QtGui import QIntValidator,QPixmap,QPainter
 from PyQt5.QtWebEngineWidgets import QWebEngineView
 from pymongo import MongoClient
 from PyQt5.QtCore import Qt
-import webview
 
 class CardContainer(QFrame):
     def __init__(self, content_widget):
@@ -153,15 +152,11 @@ class HomePage(QWidget):
         create_quiz_button.setFixedSize(380, 60)
         create_quiz_button.clicked.connect(self.create_quiz)
         create_quiz_button.setObjectName("startQuizButton")
-        create_quiz_button.setStyleSheet("color: black; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px")
-
 
         start_quiz_button = QPushButton('Start Quiz', self)
         start_quiz_button.setFixedSize(380, 60)
         start_quiz_button.clicked.connect(self.start_quiz)
         start_quiz_button.setObjectName("startQuizButton")
-        start_quiz_button.setStyleSheet("color: black; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px")
-
 
         v_layout = QVBoxLayout()
         v_layout.addWidget(image_label)
@@ -245,56 +240,52 @@ class QuizInputPage2(QWidget):
         self.stacked_widget = stacked_widget
         self.initUI()
 
-    
     def initUI(self):
+        self.setGeometry(100, 100, 951, 710)
+        self.setStyleSheet(open('style.css').read())
+        pixmap = QPixmap(r'/home/mathi/django/pytutorial/sd.png')
+
+        # Create a background image label
+        background_label = QLabel(self)
+        pixmap_background = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')
+        background_label.setPixmap(pixmap_background)
+        background_label.setGeometry(0, 0, self.width(), self.height())
+
         # Create a container widget for the main content
         container = QWidget(self)
-        container.setGeometry(100, 100, 500, 440)  # Set the container's size and position
         container.setObjectName("contentContainer")
 
         # Create a layout for the container
         container_layout = QVBoxLayout()
-        container_layout.setAlignment(Qt.AlignCenter)  # Center align the content vertically
+        container_layout.setAlignment(Qt.AlignCenter)  # Center align the content
 
-        # Load the image sd.png
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')
+        # Create a label for the image
         image_label = QLabel(container)
         image_height = 200
         image_label.setPixmap(pixmap.scaledToHeight(image_height))
         container_layout.addWidget(image_label)
-        background_label = QLabel(self)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
-        background_label.setPixmap(pixmap)
-        background_label.resize(self.size()) 
-        background_label.setGeometry(100,100,951,720) # Resize the label to match the window size
-        background_label.move(0, 0)
-        background_label.lower()
+
         # Create input widgets and buttons
-        self.name_label = QLabel('Enter Your Name:', container)
+        self.name_label = QLabel('Enter Your Name:')
         self.name_label.setObjectName("titleLabel")
         self.name_label.setFixedHeight(40)
         self.name_label.setStyleSheet("color: black; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px")  # Set text color and font
-        self.name_input = QLineEdit(container)
+        self.name_input = QLineEdit()
         self.name_input.setFixedHeight(40)
-        self.name_input.setStyleSheet("border-radius: 10px; border: 2px solid #ccc; padding: 5px;")
 
-
-        self.category_label = QLabel('Select Quiz Category:', container)
+        self.category_label = QLabel('Select Quiz Category:')
         self.category_label.setObjectName("titleLabel")
         self.category_label.setFixedHeight(40)
         self.category_label.setStyleSheet("color: black; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px")  # Set text color and font
-        self.category_dropdown = QComboBox(container)    
+        self.category_dropdown = QComboBox()    
         self.category_dropdown.addItem('os')
         self.category_dropdown.addItem('Networks')
         self.category_dropdown.addItem('Aptitude')
         self.category_dropdown.addItem('Verbal')
         self.category_dropdown.setFixedHeight(40)
-        self.category_dropdown.setStyleSheet("border-radius: 10px; border: 2px solid #ccc; padding: 5px;")
 
-
-        start_button = QPushButton('Start Quiz', container)
+        start_button = QPushButton('Start Quiz')
         start_button.setObjectName("startQuizButton")
-        start_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #e042f5; border: none; border-radius: 10px; padding: 10px 20px;")
         start_button.clicked.connect(self.start_quiz)
         start_button.setFixedHeight(40)  # Increase button height
 
@@ -305,20 +296,70 @@ class QuizInputPage2(QWidget):
         container_layout.addWidget(self.category_dropdown)
         container_layout.addWidget(start_button)
 
-        # Create a horizontal layout to center the container horizontally
-        horizontal_layout = QHBoxLayout()
-        horizontal_layout.addStretch(1)  # Add a stretchable space before the container
-        horizontal_layout.addLayout(container_layout)  # Add the centered container
-        horizontal_layout.addStretch(1)  # Add a stretchable space after the container
+        # Set the container layout
+        container.setLayout(container_layout)
 
-        # Set the horizontal layout for the main widget
-        self.setLayout(horizontal_layout)
+        # Create a scroll area to contain the content
+        scroll_area = QScrollArea(self)
+        scroll_area.setWidget(container)
+        scroll_area.setWidgetResizable(True)  # Allow the content to be scrollable
 
         # Set the background color and styles for the container
-        
+        container.setStyleSheet(
+            "background: rgba(255, 255, 255, 0.17);"
+            "border-radius: 16px;"
+            "box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);"
+            "backdrop-filter: blur(5px);"
+            "-webkit-backdrop-filter: blur(5px);"
+            "border: 1px solid rgba(255, 255, 255, 0.3);")
+
+        # Create a layout for the main widget and add the scroll area
+        main_layout = QVBoxLayout(self)
+        main_layout.addWidget(scroll_area)
 
         self.setWindowTitle('Image Display')
         self.show()
+
+        self.name_label = QLabel('Enter Your Name:')
+        self.name_label.setObjectName("titleLabel")
+        self.name_label.setFixedHeight(40)
+        self.name_label.setStyleSheet("color: black;     font-family: 'Special Elite', cursive;font-weight: bold; font-size: 16px")  # Set text color and font
+        self.name_input = QLineEdit()
+        self.name_input.setFixedHeight(40)
+
+        self.category_label = QLabel('Select Quiz Category:')
+        self.category_label.setObjectName("titleLabel")
+        self.category_label.setFixedHeight(40)
+        self.category_label.setStyleSheet("color: black;     font-family: 'Special Elite', cursive;font-weight: bold; font-size: 16px")  # Set text color and font
+        self.category_dropdown = QComboBox()    
+      
+        self.category_dropdown.addItem('os')
+        self.category_dropdown.addItem('Networks')
+        self.category_dropdown.addItem('Aptitude')
+        self.category_dropdown.addItem('Verbal')
+        self.category_dropdown.setFixedHeight(40)
+
+        start_button = QPushButton('Start Quiz')
+        start_button.setObjectName("startQuizButton")
+        start_button.clicked.connect(self.start_quiz)
+        start_button.setFixedHeight(40)  # Increase button height
+        v_layout = QVBoxLayout()
+        v_layout.addWidget(self.name_label)
+        v_layout.addWidget(self.name_input)
+        v_layout.addWidget(self.category_label)
+        v_layout.addWidget(self.category_dropdown)
+        v_layout.addWidget(start_button)
+
+        # Center the form vertically within the container
+        form_container = QWidget(self)
+        form_container.setLayout(v_layout)
+        v_container_layout = QVBoxLayout()
+        v_container_layout.addStretch(1)
+        v_container_layout.addWidget(form_container)
+        v_container_layout.addStretch(1)
+        container.layout().addLayout(v_container_layout)
+
+
 
     def start_quiz(self):
          # Start the quiz based on user inputs like name and category.
@@ -343,13 +384,6 @@ class QuizInputPage2(QWidget):
                         quiz_window = QuizWindow(name, questions, category)
                         self.stacked_widget.addWidget(quiz_window)
                         self.stacked_widget.setCurrentWidget(quiz_window)
-                       
-        #Execute a Python script named "co.py" when "Create Quiz" is clicked.
-                        try:
-                            subprocess.Popen(["python3", "input.py"])
-                        except Exception as e:
-                            QMessageBox.critical(self, 'Error', f'An error occurred while executing co.py: {str(e)}')
-
                     else:
                         QMessageBox.warning(self, 'No Questions', 'No quiz questions found for the entered code.')
                 else:
@@ -366,104 +400,106 @@ class QuizInputPage(QWidget):
 
         self.stacked_widget = stacked_widget
         self.initUI()
+
     def initUI(self):
-        container = QWidget(self)
-        container.setGeometry(100, 100, 500, 440)
-        container.setObjectName("contentContainer")
+        self.setGeometry(100, 100, 951, 710)
+        self.setStyleSheet(open('style.css').read())
+        pixmap = QPixmap(r'/home/mathi/django/pytutorial/sd.png')
 
-        container_layout = QVBoxLayout()
-        container_layout.setAlignment(Qt.AlignCenter)
-
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')
-        image_label = QLabel(container)
+        image_label = QLabel(self)
+        # Set a fixed height for the image (e.g., 200 pixels)
         image_height = 200
         image_label.setPixmap(pixmap.scaledToHeight(image_height))
-        container_layout.addWidget(image_label)
 
+        # Create a background image label
         background_label = QLabel(self)
         pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')
         background_label.setPixmap(pixmap)
-        background_label.resize(self.size())
-        background_label.setGeometry(100, 100, 951, 720)
-        background_label.move(0, 0)
-        background_label.lower()
+        background_label.setGeometry(0, 0, self.width(), self.height())
+        v_layout = QVBoxLayout()
+        v_layout.addWidget(image_label)
+        h_layout = QHBoxLayout()
+        h_layout.addLayout(v_layout)
+        container = QWidget(self)
+        container.setLayout(h_layout)
 
-        self.name_label = QLabel('Enter Your Name:', container)
-        self.name_label.setObjectName("titleLabel")
-        self.name_label.setFixedHeight(40)
-        self.name_label.setStyleSheet("color: black; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px")
+        # Set the background color and styles for the container
+        container.setStyleSheet(
+            "background: rgba(255, 255, 255, 0.17);"
+            "border-radius: 16px;"
+            "box-shadow: 0 4px 30px rgba(0, 0, 0, 0.1);"
+            "backdrop-filter: blur(5px);"
+            "-webkit-backdrop-filter: blur(5px);"
+            "border: 1px solid rgba(255, 255, 255, 0.3);")
 
+        # Center the container horizontally and vertically
+        h_center_layout = QHBoxLayout(self)
+        h_center_layout.addStretch(1)
+        h_center_layout.addWidget(container)
+        h_center_layout.addStretch(1)
 
-        self.name_input = QLineEdit(container)
-        self.name_input.setFixedHeight(40)
-        self.name_input.setStyleSheet("border-radius: 10px; border: 2px solid #ccc; padding: 5px;")
-    
+        v_center_layout = QVBoxLayout(self)
+        v_center_layout.addStretch(1)
+        v_center_layout.addLayout(h_center_layout)
+        v_center_layout.addStretch(1)
 
-        self.code_label = QLabel('Enter Code:', container)
-        self.code_label.setObjectName("titleLabel")
-        self.code_label.setFixedHeight(40)
-        self.code_label.setStyleSheet("color: black; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px")
-
-        self.code_input = QLineEdit(container)  # Create a QTextEdit widget for code input
-        self.code_input.setFixedHeight(40) 
-         # Set an appropriate height for code input'
-        self.code_input.setStyleSheet("border-radius: 10px; border: 2px solid #ccc; padding: 5px;")
-       
-
-        start_button = QPushButton('Start Quiz', container)
-       
-        start_button.setObjectName("startQuizButton")
-        start_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #e042f5; border: none; border-radius: 10px; padding: 10px 20px;")
-       
-        start_button.clicked.connect(self.start_quiz)
-        start_button.setFixedHeight(40)
-
-        container_layout.addWidget(self.name_label)
-        container_layout.addWidget(self.name_input)
-        container_layout.addWidget(self.code_label)
-        container_layout.addWidget(self.code_input)  # Add the code input field
-        container_layout.addWidget(start_button)
-
-        horizontal_layout = QHBoxLayout()
-        horizontal_layout.addStretch(1)
-        horizontal_layout.addLayout(container_layout)
-        horizontal_layout.addStretch(1)
-
-        self.setLayout(horizontal_layout)
+        self.setLayout(v_center_layout)
 
         self.setWindowTitle('Image Display')
         self.show()
 
+        self.name_label = QLabel('Enter Your Name:')
+        self.name_label.setObjectName("titleLabel")
+        self.name_label.setFixedHeight(40)
+        self.name_label.setStyleSheet("color: black;     font-family: 'Special Elite', cursive;font-weight: bold; font-size: 16px")  # Set text color and font
+        self.name_input = QLineEdit()
+        self.name_input.setFixedHeight(40)
+
+        self.category_label = QLabel('Enter Quiz Category:')
+        self.category_label.setObjectName("titleLabel")
+        self.category_label.setFixedHeight(40)
+        self.category_label.setStyleSheet("color: black;     font-family: 'Special Elite', cursive;font-weight: bold; font-size: 16px")  # Set text color and font
+        # Replace the dropdown with a regular input box
+        self.code_input = QLineEdit()
+        self.code_input.setFixedHeight(40)
+
+        start_button = QPushButton('Start Quiz')
+        start_button.setObjectName("startQuizButton")
+        start_button.clicked.connect(self.start_quiz)
+        start_button.setFixedHeight(40)
+
+        v_layout = QVBoxLayout()
+        v_layout.addWidget(self.name_label)
+        v_layout.addWidget(self.name_input)
+        v_layout.addWidget(self.category_label)
+        v_layout.addWidget(self.code_input)
+        v_layout.addWidget(start_button)
+
+        # Center the form vertically within the container
+        form_container = QWidget(self)
+        form_container.setLayout(v_layout)
+        v_container_layout = QVBoxLayout()
+        v_container_layout.addStretch(1)
+        v_container_layout.addWidget(form_container)
+        v_container_layout.addStretch(1)
+        container.layout().addLayout(v_container_layout)
     def start_quiz(self):
-         # Start the quiz based on user inputs like name and category.
         name = self.name_input.text()
-        category = self.code_input.text()
-        
-        if name and category:
+        code = self.code_input.text()
+        if name and code:
             try:
                 client = pymongo.MongoClient("mongodb+srv://mathivananmvcs20:qt20232023@cluster0.gl3ocfo.mongodb.net/")
                 db = client["Quiz_app_using_QT"]
                 questions_collection = db["Questions"]
+                document = questions_collection.find_one({"unique_code": code})
 
-                # Filter the database based on the selected category and search term
-                
-                document = questions_collection.find_one({"unique_code": category})
-
-                # documents = questions_collection.find({"category": category})
                 if document:
                     questions = document.get("questions", [])
                     if questions:
                         self.stacked_widget.removeWidget(self)
-                        quiz_window = QuizWindow(name, questions, category)
+                        quiz_window = QuizWindow(name, questions, code)
                         self.stacked_widget.addWidget(quiz_window)
                         self.stacked_widget.setCurrentWidget(quiz_window)
-                       
-        #Execute a Python script named "co.py" when "Create Quiz" is clicked.
-                        try:
-                            subprocess.Popen(["python3", "input.py"])
-                        except Exception as e:
-                            QMessageBox.critical(self, 'Error', f'An error occurred while executing co.py: {str(e)}')
-
                     else:
                         QMessageBox.warning(self, 'No Questions', 'No quiz questions found for the entered code.')
                 else:
@@ -489,8 +525,6 @@ class QuizWindow(QWidget):
         self.timer.timeout.connect(self.on_timeout)
 
         view_leaderboard_button = QPushButton('View Leaderboard')
-        view_leaderboard_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #edb672; border: none; border-radius: 10px; padding: 10px 20px;")
-        
         view_leaderboard_button.clicked.connect(self.view_leaderboard)
 
         container_layout = QVBoxLayout()
@@ -587,7 +621,7 @@ class QuizWindow(QWidget):
         quiz_widget = QWidget()
         quiz_widget.setStyleSheet(open('style.css').read())
         quiz_layout = QVBoxLayout(quiz_widget)
-        
+
         image_label = QLabel()
         pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')  # Replace 'your_image_path.jpg' with the actual image path
         image_label.setPixmap(pixmap)
@@ -607,9 +641,6 @@ class QuizWindow(QWidget):
             quiz_layout.addWidget(radio_button)
 
         submit_button = QPushButton('Next')
-        submit_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #e042f5; border: none; border-radius: 10px; padding: 10px 20px;")
-        
-        
         submit_button.clicked.connect(self.check_answer)
         quiz_layout.addWidget(submit_button)
 
@@ -649,17 +680,12 @@ class QuizWindow(QWidget):
             self.score += 0
             self.remaining_time_label.clear()
             self.current_question += 1
-            self.remaining_time = 20
+            self.remaining_time = 5
             self.update_question()
 
     def show_result(self):
          # Display the quiz result, congratulate the user, and show the leaderboard.
-        if self.score/len(self.questions)>len(self.questions)-2:
-            QMessageBox.information(self, 'Quiz Completed', f'Congratulations! You are good at this subject, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
-        elif self.score/len(self.questions)<2:
-            QMessageBox.information(self, 'Quiz Completed', f' You need to focus on this subject more! , {self.name}!\nYour score: {self.score}/{len(self.questions)}')
-        else:
-            QMessageBox.information(self, 'Quiz Completed', f'You need to improve a lot in this subject!, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
+        QMessageBox.information(self, 'Quiz Completed', f'Congratulations, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
 
         # Pass the unique_code to the ScoreDashboard and show it
         leaderboard_window = ScoreDashboard(self.unique_code, self.name, self.score)

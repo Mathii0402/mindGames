@@ -1,0 +1,63 @@
+body {
+    background-image: url('your-background-image.jpg'); /* Replace with your background image path */
+    background-size: cover;
+    background-blur: 10px; /* Adjust the blur effect */
+    font-family: Arial, sans-serif;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+    margin: 0;
+}
+
+form {
+    background: rgba(255, 255, 255, 0.15); /* Adjust the background color and opacity */
+    border-radius: 10px;
+    padding: 20px;
+    backdrop-filter: blur(10px); /* Adjust the blur effect */
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+    width: 300px;
+}
+
+.form-group {
+    margin-bottom: 15px;
+}
+
+label {
+    font-weight: bold;
+    color: #fff; /* Text color */
+}
+
+input, button {
+    width: 100%;
+    padding: 10px;
+    border: none;
+    border-radius: 5px;
+    background: rgba(255, 255, 255, 0.2); /* Input background color and opacity */
+    color: #fff; /* Text color */
+    margin-top: 5px;
+    transition: background 0.3s ease-in-out;
+}
+
+input:focus, button:focus {
+    background: rgba(255, 255, 255, 0.3); /* Input background color and opacity on focus */
+    outline: none;
+}
+
+.error {
+    color: #ff4d4d; /* Error text color */
+    font-size: 12px;
+    margin-top: 5px;
+}
+
+.submit-button {
+    background: #3498db; /* Button background color */
+    color: #fff; /* Button text color */
+    cursor: pointer;
+    transition: background 0.3s ease-in-out;
+}
+
+.submit-button:hover {
+    background: #2980b9; /* Button background color on hover */
+}

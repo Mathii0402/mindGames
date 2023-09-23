@@ -3,7 +3,7 @@ import webview
 # Create a GUI window to view the HTML content
 webview.create_window(
     'quizzapp', 
-    'http://0.0.0.0:8080',
+    'https://google.com',
     x=100,  # Adjust the x-coordinate as needed
     y=100,  # Adjust the y-coordinate as needed
     width=700,  # Adjust the width as needed

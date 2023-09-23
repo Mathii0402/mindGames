@@ -93,6 +93,7 @@ class QuizWindow(QWidget):
             background_pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the path to your background image
             background_label.setPixmap(background_pixmap)
             background_label.setAlignment(Qt.AlignCenter) 
+            
             # Create an image label and add it to the layout
             image_label = QLabel()
             pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')  # Replace with the path to your image
@@ -229,3 +230,53 @@ def main():
 
 if __name__ == '__main__':
     main()
+
+
+import sys
+from PyQt5.QtWidgets import QApplication, QWidget, QVBoxLayout, QLabel, QPushButton, QMainWindow
+
+class Page1(QWidget):
+    def __init__(self):
+        super().__init__()
+        self.setWindowTitle('Page 1')
+        layout = QVBoxLayout()
+        label = QLabel('This is Page 1')
+        layout.addWidget(label)
+        button = QPushButton('Next')
+        button.clicked.connect(self.open_page2)
+        layout.addWidget(button)
+        self.setLayout(layout)
+
+    def open_page2(self):
+        self.window = Page2(self)
+        self.window.show()
+        self.hide()
+
+class Page2(QWidget):
+    def __init__(self, parent):
+        super().__init__()
+        self.setWindowTitle('Page 2')
+        self.parent = parent  # Keep a reference to the parent widget (Page1)
+        layout = QVBoxLayout()
+        label = QLabel('This is Page 2')
+        layout.addWidget(label)
+        back_button = QPushButton('Back')
+        back_button.clicked.connect(self.go_back)
+        layout.addWidget(back_button)
+        self.setLayout(layout)
+
+    def go_back(self):
+        self.parent.show()  # Show the parent widget (Page1)
+        self.close()  # Close the current widget (Page2)
+
+def main():
+    app = QApplication(sys.argv)
+    window = QMainWindow()
+    page1 = Page1()
+    window.setCentralWidget(page1)
+    window.show()
+    sys.exit(app.exec_())
+
+if __name__ == '__main__':
+    main()
+

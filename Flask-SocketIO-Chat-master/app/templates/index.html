@@ -1,0 +1,35 @@
+
+<html>
+<head>
+    <title>Quiz Chat Dorm</title>
+</head>
+<body style="font-family: Arial, sans-serif; background-color: #f2f2f2; text-align: center; padding: 20px;">
+
+    <h1 style="color: #333;">Quiz Chat Dorm</h1>
+    
+    <form method="POST" style="max-width: 400px; margin: 0 auto; background-color: #fff; padding: 20px; border-radius: 5px; box-shadow: 0 0 10px rgba(0, 0, 0, 0.1);">
+
+        {{ form.hidden_tag() }}
+        
+        <div style="margin-bottom: 10px;">
+            <label for="name" style="font-weight: bold; display: block; margin-bottom: 5px;">Name:</label>
+            <input type="text" id="name" name="name" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 3px;">
+            {% for error in form.name.errors %}
+                <div style="color: red; font-size: 14px;">{{ error }}</div>
+            {% endfor %}
+        </div>
+        
+        <div style="margin-bottom: 10px;">
+            <label for="room" style="font-weight: bold; display: block; margin-bottom: 5px;">Room:</label>
+            <input type="text" id="room" name="room" style="width: 100%; padding: 10px; border: 1px solid #ccc; border-radius: 3px;">
+            {% for error in form.room.errors %}
+                <div style="color: red; font-size: 14px;">{{ error }}</div>
+            {% endfor %}
+        </div>
+
+        <button type="submit" style="background-color: #007bff; color: #fff; border: none; padding: 10px 20px; border-radius: 3px; cursor: pointer;">Submit</button>
+        
+    </form>
+
+</body>
+</html>
