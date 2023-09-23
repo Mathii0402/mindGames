@@ -6,8 +6,8 @@ webview.create_window(
     'http://0.0.0.0:8080',
     x=100,  # Adjust the x-coordinate as needed
     y=100,  # Adjust the y-coordinate as needed
-    width=700,  # Adjust the width as needed
-    height=700,  # Adjust the height as needed
+    width=330,  # Adjust the width as needed
+    height=350,  # Adjust the height as needed
     resizable=True  # Allow resizing if desired
 )
 

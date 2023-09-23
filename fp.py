@@ -24,6 +24,44 @@ class CardContainer(QFrame):
         layout.addWidget(content_widget)
         self.setLayout(layout)
 
+class GlassCardWidget(QWidget):
+    def __init__(self, question, answer):
+        super().__init__()
+        self.initUI(question, answer)
+
+    def initUI(self, question, answer):
+        card_layout = QVBoxLayout()
+        card_layout.setContentsMargins(0, 0, 0, 0)
+        card_layout.setSpacing(0)
+
+        card_widget = QWidget(self)
+        card_widget.setObjectName("GlassCard")
+        card_widget.setStyleSheet(
+            """
+            #GlassCard {
+                background-color: rgba(255, 255, 255, 0.2);
+                border: 2px solid rgba(255, 255, 255, 0.4);
+                border-radius: 10px;
+                padding: 10px;
+            }
+            """
+        )
+
+        question_label = QLabel(question, self)
+        question_label.setAlignment(Qt.AlignCenter)
+        card_layout.addWidget(question_label)
+
+        answer_label = QLabel(answer, self)
+        answer_label.setAlignment(Qt.AlignCenter)
+        card_layout.addWidget(answer_label)
+
+       
+       
+        card_widget.setLayout(card_layout)
+
+        main_layout = QVBoxLayout()
+        main_layout.addWidget(card_widget)
+        self.setLayout(main_layout)
 
 
 class StartQuizPage(QWidget):
@@ -473,6 +511,53 @@ class QuizInputPage(QWidget):
                 QMessageBox.critical(self, 'Error', f'An error occurred: {str(e)}')
         else:
             QMessageBox.warning(self, 'Incomplete Information', 'Please enter your Name and Code.')
+class ReviewSolutionWindow(QDialog):
+    def __init__(self, questions, parent=None):
+        super().__init__(parent)
+        self.setWindowTitle('Review Solutions')
+        self.setGeometry(100, 100, 951, 710)
+        
+        # Background image
+        background_label = QLabel(self)
+        pixmap_background = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with your background image path
+        background_label.setPixmap(pixmap_background)
+        background_label.resize(self.size())
+
+        layout = QVBoxLayout()
+        centered_label = QLabel(self)
+        pixmap_centered = QPixmap('/home/mathi/django/pytutorial/sd.png')  # Replace with your centered image path
+        centered_label.setPixmap(pixmap_centered)
+        centered_label.setAlignment(Qt.AlignCenter)
+
+        layout.addWidget(centered_label)
+
+        scroll_area = QScrollArea()
+        scroll_area.setWidgetResizable(True)
+
+        content_widget = QWidget()
+        scroll_area.setWidget(content_widget)
+
+        content_layout = QVBoxLayout(content_widget)
+        content_widget.setAutoFillBackground(True)
+        content_widget.setStyleSheet("background-color: transparent;")  # Set to transparent background
+        for question_data in questions:
+            question_label = QLabel(question_data["question"])
+            answer_label = QLabel(f"Correct Answer: {question_data['options'][question_data['correct']]}")
+
+            content_layout.addWidget(question_label)
+            content_layout.addWidget(answer_label)
+
+        scroll_area.setVerticalScrollBarPolicy(Qt.ScrollBarAlwaysOn)
+        scroll_area.setHorizontalScrollBarPolicy(Qt.ScrollBarAlwaysOff)
+
+        layout.addWidget(scroll_area)
+
+        # Centered image
+        close_button = QPushButton('Close')
+        close_button.clicked.connect(self.close)
+        layout.addWidget(close_button)
+
+        self.setLayout(layout)
 
 class QuizWindow(QWidget):
     def __init__(self, name, questions, unique_code):
@@ -487,7 +572,7 @@ class QuizWindow(QWidget):
 
         self.timer = QTimer(self)
         self.timer.timeout.connect(self.on_timeout)
-
+        self.questions_answered = 0
         view_leaderboard_button = QPushButton('View Leaderboard')
         view_leaderboard_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #edb672; border: none; border-radius: 10px; padding: 10px 20px;")
         
@@ -618,7 +703,7 @@ class QuizWindow(QWidget):
         return quiz_widget
 
     def update_question(self):
-        #Update the question and options for the current quiz.
+        # Update the question and options for the current quiz.
         if self.current_question < len(self.questions):
             self.question_label.setText(self.questions[self.current_question]["question"])
             for idx, option in enumerate(self.questions[self.current_question]["options"]):
@@ -628,7 +713,14 @@ class QuizWindow(QWidget):
             self.timer.start(1000)
         else:
             self.show_result()
-
+    def show_feedback(self):
+        # Create a FeedbackWindow and pass the questions list to it
+        
+        app = QApplication([])  # Create a temporary application to display the dialog
+        review_window = ReviewSolutionWindow(self.questions)
+        review_window.exec_()
+        self.view_leaderboard()
+        print("1")
     def check_answer(self):
          # Check the selected answer, update the score, and move to the next question.
         self.timer.stop()
@@ -638,9 +730,22 @@ class QuizWindow(QWidget):
             selected_idx = self.option_buttons.id(selected_button)
             if selected_idx == self.questions[self.current_question]["correct"]:
                 self.score += 1
-            self.current_question += 1
-            self.update_question()
 
+            self.questions_answered += 1  # Increment the questions answered counter
+
+            if self.questions_answered == len(self.questions):
+                # All questions have been answered, open the leaderboard
+                # self.show_result()
+                self.show_feedback()
+                
+                
+
+                
+
+            else:
+                self.current_question += 1
+                self.update_question()
+    
     def on_timeout(self):
         self.remaining_time -= 1
         self.remaining_time_label.setText(f"Time Remaining: {self.remaining_time} seconds")
@@ -653,18 +758,21 @@ class QuizWindow(QWidget):
             self.update_question()
 
     def show_result(self):
-         # Display the quiz result, congratulate the user, and show the leaderboard.
-        if self.score/len(self.questions)>len(self.questions)-2:
-            QMessageBox.information(self, 'Quiz Completed', f'Congratulations! You are good at this subject, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
-        elif self.score/len(self.questions)<2:
-            QMessageBox.information(self, 'Quiz Completed', f' You need to focus on this subject more! , {self.name}!\nYour score: {self.score}/{len(self.questions)}')
+        print("hi")
+        # Display the quiz result, congratulate the user, and show the leaderboard.
+        if self.score / len(self.questions) > len(self.questions) - 2:
+            QMessageBox.information(self, 'Quiz Completed',
+                                    f'Congratulations! You are good at this subject, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
+        elif self.score / len(self.questions) < 2:
+            QMessageBox.information(self, 'Quiz Completed',
+                                    f' You need to focus on this subject more! , {self.name}!\nYour score: {self.score}/{len(self.questions)}')
         else:
-            QMessageBox.information(self, 'Quiz Completed', f'You need to improve a lot in this subject!, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
-
+            QMessageBox.information(self, 'Quiz Completed',
+                                    f'You need to improve a lot in this subject!, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
+        self.show_feedback()
         # Pass the unique_code to the ScoreDashboard and show it
         leaderboard_window = ScoreDashboard(self.unique_code, self.name, self.score)
         leaderboard_window.show()
-
 class ScoreDashboard(QWidget):
     def __init__(self, unique_code, name, score):
         super().__init__()

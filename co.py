@@ -109,9 +109,9 @@ class QuizApp(QWidget):
                 self.upload_button.setText("JSON Uploaded")
             except Exception as e:
                 print("Error loading JSON file:", e)
-
+                
+    # Check if the unique_code already exists in the database
     def is_unique_code_valid(self, code):
-        # Check if the unique_code already exists in the database
         collection = self.db['Questions']
         existing_quiz = collection.find_one({'unique_code': code})
         return existing_quiz is None
