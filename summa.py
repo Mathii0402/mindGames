@@ -1,54 +1,59 @@
 import sys
-from PyQt5.QtWidgets import QApplication, QMainWindow, QVBoxLayout, QPushButton, QWidget, QLabel, QSizePolicy
+import time
+from PyQt5.QtCore import Qt, QThread, pyqtSignal
+from PyQt5.QtGui import QMovie
+from PyQt5.QtWidgets import QApplication, QWidget, QPushButton, QVBoxLayout, QLabel
 
-class MyWindow(QMainWindow):
+class ContentFetcher(QThread):
+    finished_signal = pyqtSignal(str)
+
+    def run(self):
+        # Simulate a delay for content fetching (replace this with actual content fetching logic)
+        time.sleep(3)
+        self.finished_signal.emit("Content fetched!")
+
+class LoadingWidget(QWidget):
     def __init__(self):
         super().__init__()
+        self.init_ui()
 
-        self.setWindowTitle("Responsive App Example")
-        self.setGeometry(100, 100, 800, 600)  # Set an initial window size
+    def init_ui(self):
+        self.setWindowTitle("Loading Logo Example")
+        self.setGeometry(100, 100, 400, 200)
 
-        central_widget = QWidget(self)
-        self.setCentralWidget(central_widget)
+        self.loading_label = QLabel(self)
+        self.loading_movie = QMovie("loading.gif")  # Replace "loading.gif" with your loading animation file
+        self.loading_label.setMovie(self.loading_movie)
 
-        # Create a vertical layout for the central widget
-        layout = QVBoxLayout(central_widget)
+        self.loading_movie.start()
+        self.loading_label.hide()
 
-        # Create widgets
-        label = QLabel("This is a responsive app.")
-        label.setSizePolicy(QSizePolicy.Expanding, QSizePolicy.Expanding)
+        self.layout = QVBoxLayout()
+        self.button = QPushButton("Fetch Content")
+        self.button.clicked.connect(self.fetch_content)
 
-        button = QPushButton("Click Me!")
-        button.setSizePolicy(QSizePolicy.Minimum, QSizePolicy.Minimum)
+        self.layout.addWidget(self.button)
+        self.layout.addWidget(self.loading_label)
+        self.setLayout(self.layout)
 
-        # Add widgets to the layout
-        layout.addWidget(label)
-        layout.addWidget(button)
-		v_layout = QVBoxLayout(self)
-        v_layout.addStretch(1)  # Add vertical stretch to center the button
-        v_layout.addWidget(button)
-        v_layout.addStretch(1)  # Add more vertical stretch to center the button
+    def fetch_content(self):
+        self.button.setEnabled(False)
+        self.button.setText("Loading...")
+        self.loading_label.show()
 
-        # Create a horizontal layout
-        h_layout = QHBoxLayout(self)
-        h_layout.addStretch(1)  # Add horizontal stretch to center the button
-        h_layout.addLayout(v_layout)  # Add the vertical layout with the button
-        h_layout.addStretch(1)  # Add more horizontal stretch to center the button
+        self.worker = ContentFetcher()
+        self.worker.finished_signal.connect(self.on_content_fetched)
+        self.worker.start()
 
-        self.setLayout(h_layout)
-        # Connect button signal
-        button.clicked.connect(self.on_button_click)
-
-    def on_button_click(self):
-        print("Button Clicked!")
-
-    def resizeEvent(self, event):
-        # Handle window resize events here
-        print(f"Window Resized to {event.size()}")
+    def on_content_fetched(self, content):
+        self.loading_label.hide()
+        self.button.setEnabled(True)
+        self.button.setText("Fetch Content")
+        print(content)  # Replace with the code to handle the fetched content
 
 def main():
     app = QApplication(sys.argv)
-    window = MyWindow()
+    window = LoadingWidget()
     window.show()
     sys.exit(app.exec_())
 

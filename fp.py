@@ -330,12 +330,14 @@ class QuizInputPage2(QWidget):
         self.category_dropdown.setStyleSheet("border-radius: 10px; border: 2px solid #ccc; padding: 5px;")
 
 
+        
         start_button = QPushButton('Start Quiz', container)
         start_button.setObjectName("startQuizButton")
         start_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #e042f5; border: none; border-radius: 10px; padding: 10px 20px;")
         start_button.clicked.connect(self.start_quiz)
-        start_button.setFixedHeight(40)  # Increase button height
+        start_button.setFixedHeight(40)
 
+        self.start_button = start_button
         # Add input widgets and buttons to the container layout
         container_layout.addWidget(self.name_label)
         container_layout.addWidget(self.name_input)
@@ -362,7 +364,12 @@ class QuizInputPage2(QWidget):
          # Start the quiz based on user inputs like name and category.
         name = self.name_input.text()
         category = self.category_dropdown.currentText()
-        
+         # Change the text of the Start Quiz button
+        self.start_button.setText("Loading QuiZzz..")
+
+    # Manually force the button to update its appearance
+        self.start_button.repaint()
+
         if name and category:
             try:
                 client = pymongo.MongoClient("mongodb+srv://mathivananmvcs20:qt20232023@cluster0.gl3ocfo.mongodb.net/")
@@ -449,13 +456,12 @@ class QuizInputPage(QWidget):
        
 
         start_button = QPushButton('Start Quiz', container)
-       
         start_button.setObjectName("startQuizButton")
         start_button.setStyleSheet("color: white; font-family: 'Special Elite', cursive; font-weight: bold; font-size: 16px; background-color: #e042f5; border: none; border-radius: 10px; padding: 10px 20px;")
-       
         start_button.clicked.connect(self.start_quiz)
         start_button.setFixedHeight(40)
 
+        self.start_button = start_button
         container_layout.addWidget(self.name_label)
         container_layout.addWidget(self.name_input)
         container_layout.addWidget(self.code_label)
@@ -476,7 +482,8 @@ class QuizInputPage(QWidget):
          # Start the quiz based on user inputs like name and category.
         name = self.name_input.text()
         category = self.code_input.text()
-        
+        self.start_button.setText("Loading QuiZzz..")
+        self.start_button.repaint()
         if name and category:
             try:
                 client = pymongo.MongoClient("mongodb+srv://mathivananmvcs20:qt20232023@cluster0.gl3ocfo.mongodb.net/")
@@ -735,12 +742,9 @@ class QuizWindow(QWidget):
 
             if self.questions_answered == len(self.questions):
                 # All questions have been answered, open the leaderboard
-                # self.show_result()
+                self.show_result()
                 self.show_feedback()
-                
-                
-
-                
+            
 
             else:
                 self.current_question += 1
@@ -769,10 +773,12 @@ class QuizWindow(QWidget):
         else:
             QMessageBox.information(self, 'Quiz Completed',
                                     f'You need to improve a lot in this subject!, {self.name}!\nYour score: {self.score}/{len(self.questions)}')
-        self.show_feedback()
+        
+        
         # Pass the unique_code to the ScoreDashboard and show it
         leaderboard_window = ScoreDashboard(self.unique_code, self.name, self.score)
-        leaderboard_window.show()
+        # leaderboard_window.show()
+        self.show_feedback()
 class ScoreDashboard(QWidget):
     def __init__(self, unique_code, name, score):
         super().__init__()
