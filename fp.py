@@ -79,7 +79,7 @@ class StartQuizPage(QWidget):
         
         self.setStyleSheet(open('style.css').read())
         
-        pixmap = QPixmap(r'/home/mathi/django/pytutorial/sd.png')
+        pixmap = QPixmap(r'sd.png')
         
         image_label = QLabel(self)
         image_label.setPixmap(pixmap)
@@ -134,11 +134,11 @@ class StartQuizPage(QWidget):
     def paintEvent(self, event):
         # Paint the background image
         painter = QPainter(self)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')
+        pixmap = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')
         painter.drawPixmap(self.rect(), pixmap)
 
         # Create your content (buttons, labels, etc.)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')
+        pixmap = QPixmap('sd.png')
         image_label = QLabel(self)
         image_label.setPixmap(pixmap)
         image_label.move(100, 100)
@@ -182,7 +182,7 @@ class HomePage(QWidget):
         
         self.setStyleSheet(open('style.css').read())
         
-        pixmap = QPixmap(r'/home/mathi/django/pytutorial/sd.png')
+        pixmap = QPixmap('sd.png')
         
         image_label = QLabel(self)
         image_label.setPixmap(pixmap)
@@ -241,11 +241,11 @@ class HomePage(QWidget):
     def paintEvent(self, event):
         # Paint the background image
         painter = QPainter(self)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')
+        pixmap = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')
         painter.drawPixmap(self.rect(), pixmap)
 
         # Create your content (buttons, labels, etc.)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')
+        pixmap = QPixmap('sd.png')
         image_label = QLabel(self)
         image_label.setPixmap(pixmap)
         image_label.move(100, 100)
@@ -264,7 +264,7 @@ class HomePage(QWidget):
     def execute_co_script(self):
         #Execute a Python script named "co.py" when "Create Quiz" is clicked.
         try:
-            subprocess.Popen(["python3", "co.py"])
+            subprocess.Popen(["python", "co.py"])
         except Exception as e:
             QMessageBox.critical(self, 'Error', f'An error occurred while executing co.py: {str(e)}')
 
@@ -295,13 +295,13 @@ class QuizInputPage2(QWidget):
         container_layout.setAlignment(Qt.AlignCenter)  # Center align the content vertically
 
         # Load the image sd.png
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')
+        pixmap = QPixmap('sd.png')
         image_label = QLabel(container)
         image_height = 200
         image_label.setPixmap(pixmap.scaledToHeight(image_height))
         container_layout.addWidget(image_label)
         background_label = QLabel(self)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
+        pixmap = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
         background_label.setPixmap(pixmap)
         background_label.resize(self.size()) 
         background_label.setGeometry(100,100,951,720) # Resize the label to match the window size
@@ -391,7 +391,7 @@ class QuizInputPage2(QWidget):
                        
         #Execute a Python script named "co.py" when "Create Quiz" is clicked.
                         try:
-                            subprocess.Popen(["python3", "input.py"])
+                            subprocess.Popen(["python", "input.py"])
                         except Exception as e:
                             QMessageBox.critical(self, 'Error', f'An error occurred while executing co.py: {str(e)}')
 
@@ -419,14 +419,14 @@ class QuizInputPage(QWidget):
         container_layout = QVBoxLayout()
         container_layout.setAlignment(Qt.AlignCenter)
 
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')
+        pixmap = QPixmap('sd.png')
         image_label = QLabel(container)
         image_height = 200
         image_label.setPixmap(pixmap.scaledToHeight(image_height))
         container_layout.addWidget(image_label)
 
         background_label = QLabel(self)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')
+        pixmap = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')
         background_label.setPixmap(pixmap)
         background_label.resize(self.size())
         background_label.setGeometry(100, 100, 951, 720)
@@ -505,7 +505,7 @@ class QuizInputPage(QWidget):
                        
         #Execute a Python script named "co.py" when "Create Quiz" is clicked.
                         try:
-                            subprocess.Popen(["python3", "input.py"])
+                            subprocess.Popen(["python", "input.py"])
                         except Exception as e:
                             QMessageBox.critical(self, 'Error', f'An error occurred while executing co.py: {str(e)}')
 
@@ -526,13 +526,13 @@ class ReviewSolutionWindow(QDialog):
         
         # Background image
         background_label = QLabel(self)
-        pixmap_background = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with your background image path
+        pixmap_background = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with your background image path
         background_label.setPixmap(pixmap_background)
         background_label.resize(self.size())
 
         layout = QVBoxLayout()
         centered_label = QLabel(self)
-        pixmap_centered = QPixmap('/home/mathi/django/pytutorial/sd.png')  # Replace with your centered image path
+        pixmap_centered = QPixmap('sd.png')  # Replace with your centered image path
         centered_label.setPixmap(pixmap_centered)
         centered_label.setAlignment(Qt.AlignCenter)
 
@@ -607,7 +607,7 @@ class QuizWindow(QWidget):
         # Set the container size and position
         card_container.setGeometry(100, 100, 500, 400)
         background_label = QLabel(self)
-        pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
+        pixmap = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
         background_label.setPixmap(pixmap)
         background_label.resize(self.size())  # Resize the label to match the window size
         background_label.move(0, 0)
@@ -635,14 +635,14 @@ class QuizWindow(QWidget):
 
         # Set the background image for the leaderboard window
             background_label = QLabel()
-            pixmap = QPixmap('/home/mathi/django/pytutorial/magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
+            pixmap = QPixmap('magicpattern-mesh-gradient-1695381891730.jpeg')  # Replace with the actual image path
             background_label.setPixmap(pixmap)
             background_label.resize(self.size())  # Resize the label to match the window size
             background_label.move(0, 0)
             background_label.lower()
             # Create an image label and add it to the layout
             image_label = QLabel()
-            pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')  # Replace with the path to your image
+            pixmap = QPixmap('sd.png')  # Replace with the path to your image
             image_label.setPixmap(pixmap)
             image_label.setAlignment(Qt.AlignCenter)  # Center the image horizontally
             layout.addWidget(image_label)
@@ -681,7 +681,7 @@ class QuizWindow(QWidget):
         quiz_layout = QVBoxLayout(quiz_widget)
         
         image_label = QLabel()
-        pixmap = QPixmap('/home/mathi/django/pytutorial/sd.png')  # Replace 'your_image_path.jpg' with the actual image path
+        pixmap = QPixmap('sd.png')  # Replace 'your_image_path.jpg' with the actual image path
         image_label.setPixmap(pixmap)
         quiz_layout.addWidget(image_label)
         self.question_label = QLabel()
